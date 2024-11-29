@@ -166,6 +166,8 @@ encryptionProvider는 흠.. 이게 환경변수에서 끌고 오는 것 같은�
 
 그리고 테스트에서 사용하자.
 
+In-memory 관련 Nuget 패키지를 설치해주고.
+
 
 serviceProvider와 logger 참조.
 
