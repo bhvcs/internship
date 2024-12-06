@@ -256,6 +256,13 @@ readOnlyDbContext에서는 확인되지 않았다.
 
 내가 dbcontext에 대한 여러 옵션들을 빼고 시도해봤다. 하지만 InMeMoryDatabaseRoot 이 녀석의 설정 없이는 동일한 데이터베이스를 공유하지 못했다. 설명에는 분명히 동일한 내부 서비스 공급자를 사용하고 이름이 같다면
 공유된다고 했는데, 이상하다. 나도 모르게 내부 서비스 공급자가 새로 만들어지는 것 같은데.. 일단 동일한 InMeMoryDatabaseRoot 객체를 옵션에 넣고 사용하면 해결된다.
+--
+encryptionProvider 설정
+
+데이터를 넣을 떄 context에 들어가는 것은 확인. But [Encrypted] 때문인지 계속 null로 들어감 =>  [Encrypted]  없으면 문제 없음
+일단 IEncryptionProvider에 Mock한 객체를 넣었다. Encrypt 동작도 Mock했다. 근데 못 물고 들어가는 것 같음.
+기존에는 IEncryptionProvider를 구현한 클래스의 객체를 의존성으로 받고 있었다.
+=> IEncryptionProvider의 Encrypt와 Decrypt Mocking 해야 됨. 사실 Encrypt만 Mocking하다가 계속 안되서 뭐가 문제인지 몰랐는데, decrypt까지 하니 해결 되었다.
 
 
 예약 활성화/비활성화 할 떄 스케줄 판단 로직
@@ -268,13 +275,9 @@ readOnlyDbContext에서는 확인되지 않았다.
  - 고객 정보가 잘 join 되었는지
  - 예약 대기만 있는지
  - 정렬 잘 되었는지
+ - 페이징이 잘 되었는지
 
- - 고객 정보가 잘 join 되었는지
-고객 정보 중 Encrypt attribute가 붙은 속성이 몇 개 있는데, encrypt를 잘못해서인지 계속 null로 나온다.
-
-너무 많이 바꿔서 다시 테스트 해야 됨.
-근데 아직 테스트 코드를 못짜서 일일이 눌러봐야 됨. 이래서 test 코드를 짜는 거.
-테스트한 사항.
-db의 udtm 컬럼이 api 반환될 때, dtm으로 제대로 바뀌었는지 => 확인
-이번에 가능한 스케쥴에 대한 고려도 추가됨.
- 불가능한 스케줄에 포함된다면 상담 승인이 불가능해야됨 => 확인 됨.
+데이터 몇 개 깔아놓고
+Search 필터에 이름을 넣었을 땐, 그 사람의 예약 정보만 뱉어야 됨.
+상담 타입을 넣었을 떄, 예약 정보들의 상담 타입이 선택한 타입이어야 함.
+기본 ReceiptDtm을 기준으로 내림차순
