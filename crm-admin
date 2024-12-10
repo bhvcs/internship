@@ -296,7 +296,7 @@ Search 필터에 이름을 넣었을 땐, 그 사람의 예약 정보만 뱉어�
  상담 확정 11:30~12 스케쥴 13시~13:30 => true
  상담확정 12~12:30 스케쥴 12:30~13시 => false
 
-상담 확정 목록 조회
+ㅇ 상담 확정 목록 조회
 service test
 consultant와 customer가 잘 join이 되는지
 예약 확정이 나오는지
@@ -305,28 +305,31 @@ consultant와 customer가 잘 join이 되는지
 관리자일 때) 모두의 것이 나오는지
 정렬은 대기목록에서 봤으니 안봐도 될듯
 
-상담 변경 목록
+ㅇ 상담 변경 목록
 service test
 consultant와 customer가 잘 join이 되는지
 
-고객 정보 조회
+ㅇ 고객 정보 조회
+join이 잘 되는지
+return 값에 예상한 값이 나오는지
 
-public static CrmCustomerInfoDto From(ConsultingReservation cr)
-    {
-        return new CrmCustomerInfoDto
-        {
-            CrmCustomerName = cr.CrmCustomer.UserNameEnc,
-            CrmCustomerAge = DateTime.Today.Year - DateTime.ParseExact(cr.CrmCustomer.BirthDateEnc, "yyyyMMdd", null).Year + 1,
-            CrmCustomerPhoneNumber = cr.CrmCustomer.PhoneNumberEnc,
-            ConsultingTypeCode = cr.ConsultingTypeCode,
-            ConsultingStatusCode = cr.ConsultingStatusCode,
-            ConsultingStartDtm = cr.ConsultingStartUdtm.ToKst(),
-            ReservationRequestedDtm = cr.ReceiptUdtm.ToKst(),
-            ConsultantName = cr.Consultant?.ConsultantNameEnc,
-            ConsultingAddress = cr.ConsultingAddress?.MeetingAddress,
-            SurveyVersion = cr.SurveyResult.SurveyVersion,
-            SurveyAnswerList = JsonUtil.Deserialize<List<SurveyAnswerDto>>(cr.SurveyResult.Answers),
-        };
-    }
+ㅇ 상담 승인 
 
-상담 승인 건
+테스트 데이터:
+투권인 입장)
+예약 대기인 상담 5개
+승인을 눌렀을 떄 => 1. 해당 상담 데이터에 Consultant와 ConsultingAddressId가 있는지. 유선상담일 땐 주소가 나오면 안됨.
+                   2. customer의 ConsultingProgressStatus가 상담 확정인지 확인
+다른 투권인의 이름으로 승인을 하려할 때, 오류 발생하는지
+고객이 상담 신청을 여러개 할 수 있다면, 그중 어떤 상담이 승인되었을 때, 승인되지 않은 상담들은 상담 승인이 되서는 안된다?
+
+ㅇ 상담 변경 및 취소
+테스트 데이터:
+상담 확정인 데이터 3개
+상담 히스토리에 해당 데이터가 만들어졌는지 확인
+바꾼 데이터가 원하는 대로 잘 바뀌었는지 확인
+
+ㅇ 상담 일정
+
+
+문제점:
