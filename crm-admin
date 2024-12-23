@@ -430,3 +430,51 @@ private 생성자로 인해, 테스트용 static 메서드를 추가하여 priva
 디버깅을 해보니, 같은 데이터를 다시 추가하고 있는 것이었음. 즉, context에 동일한 데이터 추가 작업을 반복하는 것. 
 나는 테스트 케이스마다 생성자가 실행되기에, context도 함께 초기화가 될 거라고 생각했던 것 같음.
 그래서 EnsureDeleteAsync()를 추가해서, 매번 context 내의 데이터들을 지우고 다시 추가했다.
+
+페이징 처리를 위해 데이터를 추가적으로 넣으면 먼저 예약 대기만 반환하는 테스트가 영향을 받지만 개수만 수정하면 됨
+KST변환되는지도 정렬해서 10개 따오면 됨.
+
+페이징 처리:
+21개의 예약 대기 목록임
+총 3페이지 나옴
+
+스케쥴 관련 로직:
+날짜 선택에 고려되어야 하는 예약 목록들을 추가할 것임.
+상담 날짜를 변경할 때) 가능한 날짜들이 나오겠지. 그때 상담 목록들을 고려해야함.
+근데 상담 대기 목록도 고려해야하나? 고려 안하는게 맞다. 확정목록만 가지고 해야됨
+
+일단 다함
+추가적으로 짜야하는 테스트 코드:
+예약 대기 목록에서 isAvailable
+고객 상태 설정
+메모 관련로직: 고객 정보 조회할 때 메모도 확인
+메모 이력 로직
+
+예약 변경 메서드가 있는데 반환값이 void임. test code를 짜려고 보니, 변경한 히스토리가 어디 있는지 찾기 힘듦 => return 값으로 history에 새롭게 생성된 행의 id를 줬으면 어땠을까
+
+예약 변경/취소 목록에 데이터를 아무생각 없이 만들어놨음. 예약 대기 목록과 연관되게 할까? => 일단 안되게
+
+
+var memoList = await _db.AdminReadSessionAsync(async context =>
+        {
+            return await context.SurveyResult
+                .Include(x => x.ConsultantMemos)
+                .Where(x => x.SurveyResultId == 2)
+                .Select(x => x.ConsultantMemos)
+                .SingleAsync();
+        });
+에러남 => LinQ에서 IQueryable<List<ConsultantMemo>> 를 SingleAsync로 했을 때, 기대하는 것은 내부 컬렉션이지만, LinQ가 지원하지 않아서, 데이터베이스에서 바로 가져올 수 없대.
+
+var memoList = await _db.AdminReadSessionAsync(async context =>
+        {
+            var survey = await context.SurveyResult
+                .Include(x => x.ConsultantMemos)
+                .Where(x => x.SurveyResultId == 2)
+                .SingleAsync();
+            return survey.ConsultantMemos;
+        });
+에러 안남
+
+--문제--
+상담 대기일때 투권인이 메모를 못하게 해놨음.
+또 문제가 있었는데 기억이 안남.
