@@ -535,3 +535,56 @@ A 와 B는 엔티티 객체이며 A가 B를 참조한다.
 그게 아니면 테이블에 저장해서 특정 시간되면 일괄 발송
 
 이건 공통 로직이기 때문에 하나의 클래스로 만들어야겠다. 해당 객체에서 보내도록 메서드를 호출하고, 시간에 따른 행동 판단은 해당 객체가 할 수 있도록
+CrmAlimTalkService: ReservationService에 추가
+이유: 데이터는 처리되었는데 알림톡이 안가면 문제 발생. 차라리 하나의 트랜잭션 안에서 알림톡까지 보내어서 에러 발생시 롤백될 수 있도록
+
+
+상담 승인/변경시 알림톡에 필요한 값
+상담 유형 - consulting_reservation
+상담 일정 - consulting_reservation
+장소 - consulting_reservation
+문의 - consulting_reservation(consulting_contact)
+
+상담
+
+취소 및 변경에 대해 앱 -> 띄울 웹 페이지가 아직 없음 -> 취소 및 변경은 웹으로 들어가서 처리하라고 하고 문의 번호만 남기면 될 듯
+필요한 데이터를 보니 상담 id만 건네주면 될 듯
+
+-- 1227
+consultingContact 관련 로직은 수정함
+알림톡 설정 완료 해야됨
+일단 관리자 페이지에서 필요한 로직을 다 만들고 가자
+
+언제 알림톡을 보내는지)
+상담 대기, 확정, 변경, 취소
+
+알림톡을 보낼 때 대기인 상담에 대해 알림톡을 보낼 때와, 변경인 삼담에 대해 알림톡을 보낼 때 공통 로직을 사용하고자 했음.
+공통 로직으로 만들기 위해 다른 부분은 각 상황마다 호출하는 함수가 다른 것.
+이런 부분에 대한 처리는 전에 페이징 처리를 할 때 사용했었음
+
+async Task<PageDto<F>> PagingAsync<T, F>(PagingParams pagingParams, IQueryable<T> query,
+        Func<T, F> func) where T : class
+
+똑같이 하려 했지만 안됐었음.
+상황: 
+SendReservationAlimTalkAsync<T1, T2, F>(..., Func<T1, T2, F> func)
+T1과 T2에 대해 정확히 무엇인지 명시하지 않으면 에러가 났었음.
+GPT에 물어보니 이건 인풋이 두개 짜리라, 타입 추론이 어려워서 그랬다고 함.
+여기에 대해 정확한 사실인지는 모르겠으나, 앞에 것은 query의 타입이라던지, func의 반환 타입이라던지 명확하니깐 타입 추론이 쉬웠던 것은 인정이다.
+나중에 여기에 대해 조금 더 알아봐야겠음.
+
+하나의 dbcontext 안에서 context.Remove를 했다. 그리고 바로 이후에 디버깅으로 해당 context 내부의 데이터들이 어떻게 있는지 찍어보았다.
+내가 삭제한 엔티티가 아직 남아있는 것. db에는 반영이 안되더라도 context 내부에서는 반영이 됐어야 하는거 아닌가?
+라고 생각해서 삭제한 객체를 실제 쿼리로 다시 조회해보니 mysqlconnection 관련된 오류가 발생했다. 
+검색해본 결과, 표면상에는 남아있지만 실제로는 없어졌다고 내부적으로 표시된듯 하다.
+
+
+잘문 목록
+var result = await _crmAlimTalkService.SendReservationConfirmedAlimTalkAsync(context, consultingReservationId, consultingOptionsReqDto);
+이거 context를 보낼지, 혹은 완전한 consultingReservation을 보내기 => 차라리 context를 보내는게 맞다
+
+TODOLIST
+
+예약한 시간 이후에는 상담 승인을 못하도록
+consultant 내부의 consultingContact 로직이 남아있음
+consulting_contact의 consultantId 다 채워야함
