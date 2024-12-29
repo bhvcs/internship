@@ -577,14 +577,40 @@ GPT에 물어보니 이건 인풋이 두개 짜리라, 타입 추론이 어려�
 내가 삭제한 엔티티가 아직 남아있는 것. db에는 반영이 안되더라도 context 내부에서는 반영이 됐어야 하는거 아닌가?
 라고 생각해서 삭제한 객체를 실제 쿼리로 다시 조회해보니 mysqlconnection 관련된 오류가 발생했다. 
 검색해본 결과, 표면상에는 남아있지만 실제로는 없어졌다고 내부적으로 표시된듯 하다.
+엔티티에 변경을 가한 것은 그 순간의 db에는 반영되는 듯하다. 
+엔티티를 수정하고 같은 context 내에서 동일한 객체를 조회했을 때, 수정한 부분이 확인된다.
+다만 아까 얘기했듯이, 삭제와 추가까지는 같은 context 내에서 조회하더라도 반영되지 않는다.
 
+지금 내 로직상 consultingReservation만 담는게 아니라, consultingReservationHistory까지도 담아야 됨.
+이 둘이 사실상 다른 엔티티이기 때문에 데이터베이스에 한번에 못들어 갈 것 같음.
+1. 알림톡 대기 명단에 맞는, 그리고 두 클래스를 아우르는 새로운 클래스를 만들어서
+그 객체로 변환 후 저장하는 방법
+2. 두 클래스가 같은 인터페이스를 받도록 하기. 
 
 잘문 목록
 var result = await _crmAlimTalkService.SendReservationConfirmedAlimTalkAsync(context, consultingReservationId, consultingOptionsReqDto);
 이거 context를 보낼지, 혹은 완전한 consultingReservation을 보내기 => 차라리 context를 보내는게 맞다
+
+취소 되었을 때 필요한 output)
+고객 휴대폰 번호
+고객명
+상담일자
+사유
+문의담당자
+문의번호
+
+
+
 
 TODOLIST
 
 예약한 시간 이후에는 상담 승인을 못하도록
 consultant 내부의 consultingContact 로직이 남아있음
 consulting_contact의 consultantId 다 채워야함
+
+알림톡과 consulting_contact db 수정관련되어서 테스트 케이스 작성하기
+
+일주님에게
+vpn 권한 받기
+intellij 등록
+
