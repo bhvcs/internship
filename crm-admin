@@ -599,6 +599,13 @@ var result = await _crmAlimTalkService.SendReservationConfirmedAlimTalkAsync(con
 문의담당자
 문의번호
 
+consultingReservation.UpdateConfirmedReservationInfo(ConsultingStatusCode.예약확정, consultantId, consultingOptionsReqDto);
+지금 여기가 문제임 => 여기를 실행하면 바뀐 연락처 id에 대한 연락처 네비게이션 속성을 못가져옴
+id가 변경되면 그에 결부된 네비게이션 객체를 못 불러옴
+
+crm쪽 알림톡
+
+고객이 상담을 예약시 알림톡 가도록 추가
 
 
 
@@ -609,6 +616,9 @@ consultant 내부의 consultingContact 로직이 남아있음
 consulting_contact의 consultantId 다 채워야함
 
 알림톡과 consulting_contact db 수정관련되어서 테스트 케이스 작성하기
+
+crm 고객이 일정 변경시 얼마 전에는 일정 변경 못하도록 하기
+
 
 일주님에게
 vpn 권한 받기
