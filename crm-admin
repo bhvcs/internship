@@ -681,6 +681,13 @@ ex) 상담 시작 하루전까지
 
 고객 시간 변경은 언제까지 할 수 있는지( 상담사는 논의 후 진행될 거니 )
 
+변경 쪽에 완료 탭
+변경 쪽에 상담원 변경 추가 필요
+예약/취소 상담 시작 몇 일전까지 가능하다 로직 24시간 단위? or 날짜 단위
+상담 설문만 저장하는 경우ㅡ
+
+
+https://medium.com/iceapple-tech-talks/integration-with-google-calendar-api-using-service-account-1471e6e102c8
 
 완료
 unique key에 대한 처리가 안되어서 계속 오류남 처리 필요 => unique_key 취소함
@@ -690,22 +697,12 @@ consulting_contact의 consultantId 다 채워야함
 vpn 권한 받기
 intellij 등록
 IAdminDbContext 에 아래 메서드 넣는 것은 어떤지 물어보기
-// public DbSet<TEntity> Set<TEntity>() where TEntity : class;
+// public DbSet<TEntity> Set<TEntity>() where TEntity : class; => 예상했지만 별로
 
-local-frism-admin 의 웹훅 url 받아오기
+local-frism-admin 의 웹훅 url 받아오기=> 완료
 
-웹상에서 dtm으로 받아올 경우, 한국 시간대로 받아오는건가?(Z)
+웹상에서 dtm으로 받아올 경우, 한국 시간대로 받아오는건가?(Z) => ㅇㅇ
 
-오늘 할일
-
-# 0103
-figma에 없는 crm 로직 구현
-구글 캘린더와 연동 구현해보기
-- 상담 취소 =>  완료
-- 상담 일정 변경
-history에 고객일정변경으로 하나 생기고
-시간 바꾸기 => 완료
-consultingStatusCode 바꾸기 => 
 
 
     // public EntityEntry<TEntity> Add<TEntity>(TEntity entity) where TEntity : class;
