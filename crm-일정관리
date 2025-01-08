@@ -7,3 +7,9 @@
 개인 일정은 분명 비공개 데이터일 것이기 때문에 OAuth 사용해야될 듯
 
 redirect url은 crm 사이트의 로그인 화면이어야 
+
+https://medium.com/iceapple-tech-talks/integration-with-google-calendar-api-using-service-account-1471e6e102c8
+
+TODO
+cloud ID
+workspace 없애기
