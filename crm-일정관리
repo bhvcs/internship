@@ -10,6 +10,9 @@ redirect url은 crm 사이트의 로그인 화면이어야
 
 https://medium.com/iceapple-tech-talks/integration-with-google-calendar-api-using-service-account-1471e6e102c8
 
+calendarId는 캘린더 식별자이며 일정을 만들 캘린더의 이메일 주소이거나 로그인한 사용자의 기본 캘린더를 사용하는 특수 키워드 'primary'일 수 있습니다. 사용하려는 캘린더의 이메일 주소를 모르는 경우 Google Calendar 웹 UI의 캘린더 설정('Calendar Address' 섹션)에서 확인하거나 calendarList.list() 호출 결과에서 확인할 수 있습니다.
+
+
 TODO
 cloud ID
 workspace 없애기
