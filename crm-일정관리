@@ -12,7 +12,29 @@ https://medium.com/iceapple-tech-talks/integration-with-google-calendar-api-usin
 
 calendarId는 캘린더 식별자이며 일정을 만들 캘린더의 이메일 주소이거나 로그인한 사용자의 기본 캘린더를 사용하는 특수 키워드 'primary'일 수 있습니다. 사용하려는 캘린더의 이메일 주소를 모르는 경우 Google Calendar 웹 UI의 캘린더 설정('Calendar Address' 섹션)에서 확인하거나 calendarList.list() 호출 결과에서 확인할 수 있습니다.
 
+service Account 계정으로 캘린더와 연동을 성공함.
+
+이제 캘린더의 일정을 보고 내 db에 반영해야 함. 동기화가 꾸준히 되어야 하므로 5분에 한번씩 호출되게 할거임.
+본 api 코드는 .net을 사용해서, 파이썬 배치로 해당 api를 호출하는 식.
+
+본코드:
+캘린더에서 데이터를 읽고 db에 반영. 이게 반복되면 같은 스케쥴도 반복해서 생기게 됨.
+두가지 방법이 있을 것 같음. 
+1. 해당 캘린더에서 읽은 정보는 읽지 않도록 syncToken을 사용.
+
+2. 데이터들을 upsert하기
+
+이제 상담이 생겼을 때 구글 캘린더에 일정 만들기
+1. 고객이 상담을 변경했을 때
+먼저 지워줘야 함
+지우고자 하는 history의 시간과 일치하는 event 고르고 거기에 [상담] 있는거 없애기
+고객일 때는 상담 변경시 지우기만 하면 됨.
+
+
 
 TODO
 cloud ID
 workspace 없애기
+
+상담 예약 => 상담 변경 라우터로 변경
+
