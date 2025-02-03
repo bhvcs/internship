@@ -27,3 +27,20 @@
 프리즘 사용 경험
 
 엑셀에서 db 혹은 엑셀에서 db -> db
+
+___0203___
+
+customer
+
+추가되어야 하는 필드
+commission_kind_code : investment_solicitor_notion_database 테이블에서
+init_consultation_udtm: 노션의 상담일시_변경 값
+frism_user_id: investment_solicitor_user 테이블에서
+
+최 투권인 4.30 이후 
+챙길 컬럼:
+연락처
+나이
+프리즘 경로?
+상담일시 수정
+진행상황은 일단 냅둬
