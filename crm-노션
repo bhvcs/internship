@@ -31,6 +31,14 @@
 ___0203___
 
 customer
+crm_customer_id
+ci_enc
+user_name_enc
+gender_enc
+birth_date_enc
+phone
+
+
 
 추가되어야 하는 필드
 commission_kind_code : investment_solicitor_notion_database 테이블에서
